@@ -4,6 +4,8 @@ from settings import *
 
 from tile import Tile
 from player import Player
+from support import import_csv_layout, import_folder
+from random import choice
 
 from debug import debug
 
@@ -24,15 +26,43 @@ class Level:
         self.create_map()
 
     def create_map(self):
-        # for row_index, row in enumerate(WORLD_MAP):
-        #     for col_index, col in enumerate(row):
 
-        #         x = col_index * TILESIZE
-        #         y = row_index * TILESIZE
+        layout = {
+            'boundary': import_csv_layout('./map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('./map/map_Grass.csv'),
+            'object': import_csv_layout('./map/map_LargeObjects.csv'),
+        }
+        graphics = {
+            'grass': import_folder('./graphics/grass'),
+            'objects': import_folder('./graphics/objects')
+        }
+        print(graphics)
 
-        #         if col == 'x':
-        #             Tile((x ,y), [self.visible_sprites, self.obstacle_sprites])
-        #         if col == 'p':
+        for style, layout in layout.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+
+                        if style == 'boundary':
+                            Tile((x, y), [self.obstacle_sprites], 'invisible')
+
+                        if style == 'grass':
+                            random_grass_image = choice(graphics['grass'])
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_image)
+
+                        if style == 'object':
+                            surface = graphics['objects'][int(col)]
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surface)
+
+            
+
+                     
+
+                    #if col == 'x':
+                    #    Tile((x ,y), [self.visible_sprites, self.obstacle_sprites])
+                    #if col == 'p':
 
         
         self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
@@ -44,6 +74,7 @@ class Level:
         #update and draw game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        debug(self.player.status)
         
 
 
