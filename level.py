@@ -56,18 +56,7 @@ class Level:
                             surface = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surface)
 
-            
-
-                     
-
-                    #if col == 'x':
-                    #    Tile((x ,y), [self.visible_sprites, self.obstacle_sprites])
-                    #if col == 'p':
-
-        
         self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
-
-                
 
     def run(self):
 
@@ -76,8 +65,6 @@ class Level:
         self.visible_sprites.update()
         debug(self.player.status)
         
-
-
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self) -> None:
         super().__init__()

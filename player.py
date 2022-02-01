@@ -141,8 +141,7 @@ class Player(pygame.sprite.Sprite):
         #Set the image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
-
-
+            
     def update(self):
         self.input()
         self.move(self.speed)
